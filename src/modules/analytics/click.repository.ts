@@ -11,6 +11,8 @@ export const clickRepository = {
     os: string;
     referer: string;
     country: string;
+    city: string;
+    region: string;
   }): Promise<void> {
     await Click.create({
       urlId: data.urlId,
@@ -22,6 +24,8 @@ export const clickRepository = {
       os: data.os,
       referer: data.referer,
       country: data.country,
+      city: data.city,
+      region: data.region,
     });
   },
 };

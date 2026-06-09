@@ -8,6 +8,8 @@ export interface AnalyticsResult {
   byBrowser: { label: string; count: number }[];
   byOs: { label: string; count: number }[];
   byCountry: { label: string; count: number }[];
+  byCity: { label: string; count: number }[];
+  byRegion: { label: string; count: number }[];
   byReferrer: { label: string; count: number }[];
   timeline: { date: string; count: number }[];
 }
@@ -38,6 +40,8 @@ export const analyticsRepository = {
           byBrowser: [{ $group: { _id: '$browser', count: { $sum: 1 } } }, { $sort: { count: -1 } }],
           byOs: [{ $group: { _id: '$os', count: { $sum: 1 } } }, { $sort: { count: -1 } }],
           byCountry: [{ $group: { _id: '$country', count: { $sum: 1 } } }, { $sort: { count: -1 } }],
+          byCity: [{ $group: { _id: '$city', count: { $sum: 1 } } }, { $sort: { count: -1 } }],
+          byRegion: [{ $group: { _id: '$region', count: { $sum: 1 } } }, { $sort: { count: -1 } }],
           byReferrer: [{ $group: { _id: '$referer', count: { $sum: 1 } } }, { $sort: { count: -1 } }],
           timeline: [
             {
@@ -59,6 +63,8 @@ export const analyticsRepository = {
           byBrowser: { $map: { input: '$byBrowser', as: 'd', in: { label: '$$d._id', count: '$$d.count' } } },
           byOs: { $map: { input: '$byOs', as: 'd', in: { label: '$$d._id', count: '$$d.count' } } },
           byCountry: { $map: { input: '$byCountry', as: 'd', in: { label: '$$d._id', count: '$$d.count' } } },
+          byCity: { $map: { input: '$byCity', as: 'd', in: { label: '$$d._id', count: '$$d.count' } } },
+          byRegion: { $map: { input: '$byRegion', as: 'd', in: { label: '$$d._id', count: '$$d.count' } } },
           byReferrer: { $map: { input: '$byReferrer', as: 'd', in: { label: '$$d._id', count: '$$d.count' } } },
           timeline: '$timeline',
         },
@@ -72,6 +78,8 @@ export const analyticsRepository = {
       byBrowser: [],
       byOs: [],
       byCountry: [],
+      byCity: [],
+      byRegion: [],
       byReferrer: [],
       timeline: [],
     };

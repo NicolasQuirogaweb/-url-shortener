@@ -11,6 +11,8 @@ export interface IClick extends Document {
   os: string;
   referer: string;
   country: string;
+  city: string;
+  region: string;
 }
 
 const clickSchema = new Schema<IClick>({
@@ -24,6 +26,8 @@ const clickSchema = new Schema<IClick>({
   os: { type: String, default: '' },
   referer: { type: String, default: '' },
   country: { type: String, default: '' },
+  city: { type: String, default: '' },
+  region: { type: String, default: '' },
 });
 
 clickSchema.index({ urlId: 1, timestamp: -1 });

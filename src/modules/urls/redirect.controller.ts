@@ -6,12 +6,16 @@ import { clickRepository } from '../analytics/click.repository';
 import { hashIP } from '../../shared/utils/ipHasher';
 import { AppError } from '../../shared/utils/AppError';
 
-const lookUpCountry = async (ip: string): Promise<string> => {
+const lookUpLocation = async (ip: string) => {
   try {
-    const { data } = await axios.get(`http://ip-api.com/json/${ip}`, { timeout: 2000 });
-    return data.country ?? '';
+    const { data } = await axios.get(`http://ip-api.com/json/${ip}?fields=country,city,regionName`, { timeout: 2000 });
+    return {
+      country: data.country ?? '',
+      city: data.city ?? '',
+      region: data.regionName ?? '',
+    };
   } catch {
-    return '';
+    return { country: '', city: '', region: '' };
   }
 };
 
@@ -37,21 +41,20 @@ export const redirectController = {
     const agent = useragent.parse(req.headers['user-agent'] ?? '');
     const referer = req.headers['referer'] ?? '';
 
-    const clickData = {
-      urlId: url._id.toString(),
-      shortCode,
-      hashedIP,
-      userAgent: req.headers['user-agent'] ?? '',
-      deviceType: agent.device.toString(),
-      browser: agent.family,
-      os: agent.os.toString(),
-      referer: referer as string,
-      country: '',
-    };
-
-    lookUpCountry(clientIP).then((country) => {
-      clickData.country = country;
-      clickRepository.create(clickData);
+    lookUpLocation(clientIP).then((loc) => {
+      clickRepository.create({
+        urlId: url._id.toString(),
+        shortCode,
+        hashedIP,
+        userAgent: req.headers['user-agent'] ?? '',
+        deviceType: agent.device.toString(),
+        browser: agent.family,
+        os: agent.os.toString(),
+        referer: referer as string,
+        country: loc.country,
+        city: loc.city,
+        region: loc.region,
+      });
     });
 
     res.redirect(302, originalUrl);
