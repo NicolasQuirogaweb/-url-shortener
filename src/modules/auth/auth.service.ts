@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { env } from '../../config/env';
 import { authRepository, type SafeUser } from './auth.repository';
+import { formatDate } from '../../shared/utils/dateFormatter';
 import { AppError } from '../../shared/utils/AppError';
 import type { JwtPayload } from '../../shared/types';
 
@@ -49,7 +50,7 @@ export const authService = {
     await authRepository.updateRefreshToken(user._id.toString(), refreshToken);
 
     return {
-      user: { id: user._id.toString(), email: user.email, createdAt: user.createdAt },
+      user: { id: user._id.toString(), email: user.email, createdAt: formatDate(user.createdAt)! },
       accessToken,
       refreshToken,
     };

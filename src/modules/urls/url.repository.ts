@@ -1,5 +1,6 @@
 import { Url, IUrl } from './url.model';
 import { env } from '../../config/env';
+import { formatDate } from '../../shared/utils/dateFormatter';
 
 export interface UrlRecord {
   id: string;
@@ -7,9 +8,9 @@ export interface UrlRecord {
   shortCode: string;
   shortUrl: string;
   clicks: number;
-  expiresAt: Date | null;
-  createdAt: Date;
-  deletedAt: Date | null;
+  expiresAt: string | null;
+  createdAt: string;
+  deletedAt: string | null;
 }
 
 const toUrlRecord = (doc: IUrl): UrlRecord => ({
@@ -18,9 +19,9 @@ const toUrlRecord = (doc: IUrl): UrlRecord => ({
   shortCode: doc.shortCode,
   shortUrl: `${env.BASE_URL}/${doc.shortCode}`,
   clicks: doc.clicks,
-  expiresAt: doc.expiresAt,
-  createdAt: doc.createdAt,
-  deletedAt: doc.deletedAt,
+  expiresAt: formatDate(doc.expiresAt),
+  createdAt: formatDate(doc.createdAt)!,
+  deletedAt: formatDate(doc.deletedAt),
 });
 
 export const urlRepository = {

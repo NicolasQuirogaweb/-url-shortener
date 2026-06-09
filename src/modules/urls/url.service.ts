@@ -1,5 +1,6 @@
 import { urlRepository, type UrlRecord } from './url.repository';
 import { generateSlug } from '../../shared/utils/slugGenerator';
+import { formatDate } from '../../shared/utils/dateFormatter';
 import { AppError } from '../../shared/utils/AppError';
 
 export const urlService = {
@@ -46,9 +47,9 @@ export const urlService = {
       originalUrl: url.originalUrl,
       shortCode: url.shortCode,
       clicks: url.clicks,
-      expiresAt: url.expiresAt,
-      createdAt: url.createdAt,
-      deletedAt: url.deletedAt,
+      expiresAt: formatDate(url.expiresAt),
+      createdAt: formatDate(url.createdAt),
+      deletedAt: formatDate(url.deletedAt),
     };
   },
 

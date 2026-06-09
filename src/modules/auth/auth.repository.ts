@@ -1,15 +1,16 @@
 import { User, IUser } from './user.model';
+import { formatDate } from '../../shared/utils/dateFormatter';
 
 export interface SafeUser {
   id: string;
   email: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 const toSafeUser = (user: IUser): SafeUser => ({
   id: user._id.toString(),
   email: user.email,
-  createdAt: user.createdAt,
+  createdAt: formatDate(user.createdAt)!,
 });
 
 export const authRepository = {
