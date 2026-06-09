@@ -3,10 +3,12 @@ export const swaggerSpec = {
   info: {
     title: 'URL Shortener API',
     version: '1.0.0',
-    description: 'A production-ready REST API that shortens URLs and tracks detailed click analytics.',
+    description:
+      'A production-ready REST API that shortens URLs and tracks detailed click analytics.',
   },
   servers: [
     { url: 'http://localhost:3000', description: 'Local development' },
+    { url: 'https://url-shortener-04gp.onrender.com', description: 'Production' },
   ],
   paths: {
     '/auth/register': {
@@ -168,7 +170,11 @@ export const swaggerSpec = {
           { in: 'path', name: 'id', required: true, schema: { type: 'string' } },
           { in: 'query', name: 'from', schema: { type: 'string', format: 'date-time' } },
           { in: 'query', name: 'to', schema: { type: 'string', format: 'date-time' } },
-          { in: 'query', name: 'groupBy', schema: { type: 'string', enum: ['day', 'week', 'month'] } },
+          {
+            in: 'query',
+            name: 'groupBy',
+            schema: { type: 'string', enum: ['day', 'week', 'month'] },
+          },
         ],
         responses: {
           '200': { description: 'Analytics data' },
