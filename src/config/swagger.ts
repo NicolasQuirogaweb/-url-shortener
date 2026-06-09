@@ -214,6 +214,7 @@ export const swaggerSpec = {
         properties: {
           originalUrl: { type: 'string', format: 'uri' },
           customSlug: { type: 'string', pattern: '^[a-zA-Z0-9_-]{4,16}$' },
+          expiresAt: { type: 'string', example: '2026-12-31', description: 'Fecha de expiración en formato YYYY-MM-DD' },
         },
       },
       UrlResponse: {
@@ -224,6 +225,7 @@ export const swaggerSpec = {
           shortCode: { type: 'string' },
           shortUrl: { type: 'string' },
           clicks: { type: 'integer' },
+          expiresAt: { type: 'string', nullable: true },
           createdAt: { type: 'string' },
         },
       },

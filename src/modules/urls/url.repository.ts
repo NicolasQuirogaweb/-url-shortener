@@ -7,6 +7,7 @@ export interface UrlRecord {
   shortCode: string;
   shortUrl: string;
   clicks: number;
+  expiresAt: Date | null;
   createdAt: Date;
   deletedAt: Date | null;
 }
@@ -17,6 +18,7 @@ const toUrlRecord = (doc: IUrl): UrlRecord => ({
   shortCode: doc.shortCode,
   shortUrl: `${env.BASE_URL}/${doc.shortCode}`,
   clicks: doc.clicks,
+  expiresAt: doc.expiresAt,
   createdAt: doc.createdAt,
   deletedAt: doc.deletedAt,
 });
@@ -47,11 +49,13 @@ export const urlRepository = {
     originalUrl: string;
     shortCode: string;
     userId: string;
+    expiresAt: Date | null;
   }): Promise<UrlRecord> {
     const doc = await Url.create({
       originalUrl: data.originalUrl,
       shortCode: data.shortCode,
       userId: data.userId,
+      expiresAt: data.expiresAt,
     });
     return toUrlRecord(doc);
   },

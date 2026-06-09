@@ -24,6 +24,10 @@ export const redirectController = {
       throw new AppError('URL not found', 404);
     }
 
+    if (url.expiresAt && url.expiresAt < new Date()) {
+      throw new AppError('URL has expired', 410);
+    }
+
     const originalUrl = url.originalUrl;
 
     urlRepository.incrementClicks(url._id.toString());
