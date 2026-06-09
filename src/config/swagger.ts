@@ -66,6 +66,27 @@ export const swaggerSpec = {
         },
       },
     },
+    '/auth/google': {
+      get: {
+        tags: ['Auth'],
+        summary: 'Login with Google',
+        description: 'Redirects to Google consent screen. Open in browser, not Swagger.',
+        responses: {
+          '302': { description: 'Redirect to Google' },
+        },
+      },
+    },
+    '/auth/google/callback': {
+      get: {
+        tags: ['Auth'],
+        summary: 'Google OAuth callback',
+        description: 'Google redirects here after authentication. Returns JWT tokens.',
+        responses: {
+          '200': { description: 'Google login successful' },
+          '401': { description: 'Authentication failed' },
+        },
+      },
+    },
     '/urls': {
       post: {
         tags: ['URLs'],
