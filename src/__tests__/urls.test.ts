@@ -14,7 +14,6 @@ const mockUrls = [
     shortUrl: 'http://localhost:3000/abc12345',
     userId,
     clicks: 0,
-    expiresAt: null,
     createdAt: new Date(),
     deletedAt: null,
   },

@@ -3,7 +3,7 @@ import { generateSlug } from '../../shared/utils/slugGenerator';
 import { AppError } from '../../shared/utils/AppError';
 
 export const urlService = {
-  async create(data: { originalUrl: string; customSlug?: string; expiresAt?: string; userId: string }): Promise<UrlRecord> {
+  async create(data: { originalUrl: string; customSlug?: string; userId: string }): Promise<UrlRecord> {
     const shortCode = data.customSlug ?? generateSlug();
 
     if (data.customSlug) {
@@ -13,13 +13,10 @@ export const urlService = {
       }
     }
 
-    const expiresAt = data.expiresAt ? new Date(data.expiresAt) : null;
-
     return urlRepository.create({
       originalUrl: data.originalUrl,
       shortCode,
       userId: data.userId,
-      expiresAt,
     });
   },
 
@@ -46,7 +43,6 @@ export const urlService = {
       originalUrl: url.originalUrl,
       shortCode: url.shortCode,
       clicks: url.clicks,
-      expiresAt: url.expiresAt,
       createdAt: url.createdAt,
       deletedAt: url.deletedAt,
     };
