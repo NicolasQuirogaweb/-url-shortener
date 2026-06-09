@@ -52,6 +52,18 @@ export const authController = {
     });
   },
 
+  async googleCallback(req: Request, res: Response) {
+    const googleUser = (req as any).user;
+    const { user, accessToken, refreshToken } = await authService.googleLogin(googleUser);
+
+    res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
+    res.json({
+      success: true,
+      data: { user, accessToken },
+      error: null,
+    });
+  },
+
   async logout(req: Request, res: Response) {
     const userId = (req as any).user?.userId;
     if (userId) {

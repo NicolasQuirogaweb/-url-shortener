@@ -74,6 +74,7 @@
  */
 
 import { Router } from 'express';
+import passport from '../../config/passport';
 import { asyncWrapper } from '../../shared/utils/asyncWrapper';
 import { authenticate } from '../../shared/middleware/authenticate';
 import { rateLimitAuth } from '../../shared/middleware/rateLimiter';
@@ -85,5 +86,16 @@ router.post('/register', rateLimitAuth, asyncWrapper(authController.register));
 router.post('/login', rateLimitAuth, asyncWrapper(authController.login));
 router.post('/refresh', asyncWrapper(authController.refresh));
 router.post('/logout', authenticate, asyncWrapper(authController.logout));
+
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile', 'email'], session: false }),
+);
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false, failureRedirect: '/auth/login' }),
+  asyncWrapper(authController.googleCallback),
+);
 
 export default router;

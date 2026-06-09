@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
+import passport from './config/passport';
 import { errorHandler } from './shared/middleware/errorHandler';
 import { swaggerSpec } from './config/swagger';
 import authRoutes from './modules/auth/auth.routes';
@@ -10,6 +11,8 @@ import redirectRoutes from './modules/urls/redirect.routes';
 import analyticsRoutes from './modules/analytics/analytics.routes';
 
 const app = express();
+
+app.use(passport.initialize());
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());

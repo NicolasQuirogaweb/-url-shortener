@@ -40,6 +40,9 @@ export const authService = {
       throw new AppError('Invalid email or password', 401);
     }
 
+    if (!user.password) {
+      throw new AppError('Invalid email or password', 401);
+    }
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
       throw new AppError('Invalid email or password', 401);
@@ -74,6 +77,18 @@ export const authService = {
     await authRepository.updateRefreshToken(user._id.toString(), refreshToken);
 
     return { accessToken, refreshToken };
+  },
+
+  async googleLogin(googleUser: { userId: string; email: string }): Promise<{ user: SafeUser; accessToken: string; refreshToken: string }> {
+    const accessToken = signAccessToken(googleUser.userId);
+    const refreshToken = signRefreshToken(googleUser.userId);
+    await authRepository.updateRefreshToken(googleUser.userId, refreshToken);
+
+    return {
+      user: { id: googleUser.userId, email: googleUser.email, createdAt: '' },
+      accessToken,
+      refreshToken,
+    };
   },
 
   async logout(userId: string) {

@@ -27,6 +27,18 @@ export const authRepository = {
     return User.findById(id);
   },
 
+  async findByGoogleId(googleId: string): Promise<IUser | null> {
+    return User.findOne({ googleId });
+  },
+
+  async createFromGoogle(email: string, googleId: string): Promise<IUser> {
+    return User.create({ email, googleId });
+  },
+
+  async linkGoogle(userId: string, googleId: string): Promise<void> {
+    await User.findByIdAndUpdate(userId, { googleId });
+  },
+
   async updateRefreshToken(userId: string, refreshToken: string | null): Promise<void> {
     await User.findByIdAndUpdate(userId, { refreshToken });
   },
